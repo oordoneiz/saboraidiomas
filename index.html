@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabor a Idiomas – Aprende, Viaja, Aplica</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:       #1a7a6e;
+    --teal-light: #2ba898;
+    --teal-dark:  #0f5047;
+    --gold:       #f0c040;
+    --coral:      #f05a40;
+    --cream:      #fdf8f2;
+    --dark:       #1a1a2e;
+    --text:       #333344;
+    --soft:       #6b7a8d;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    background: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 4rem;
+    background: rgba(26,122,110,0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 30px rgba(0,0,0,.2);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    color: #fff; text-decoration: none;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,.85); text-decoration: none;
+    font-weight: 700; font-size: .9rem; letter-spacing: .05em;
+    text-transform: uppercase; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--dark);
+    padding: .6rem 1.5rem; border-radius: 50px;
+    font-weight: 800; font-size: .85rem; text-decoration: none;
+    text-transform: uppercase; letter-spacing: .05em;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240,192,64,.4); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 50%, var(--teal-light) 100%);
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; padding: 8rem 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .floating-letters {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .fl {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900; color: rgba(255,255,255,.06);
+    animation: floatLetter 8s ease-in-out infinite;
+  }
+  .fl:nth-child(1)  { font-size: 8rem;  top: 5%;  left: 60%;  animation-delay: 0s; }
+  .fl:nth-child(2)  { font-size: 5rem;  top: 70%; left: 75%;  animation-delay: 1s; }
+  .fl:nth-child(3)  { font-size: 10rem; top: 20%; left: 80%;  animation-delay: 2s; }
+  .fl:nth-child(4)  { font-size: 6rem;  top: 55%; left: 55%;  animation-delay: 3s; }
+  .fl:nth-child(5)  { font-size: 12rem; top: -5%; left: 45%;  animation-delay: 1.5s; }
+  @keyframes floatLetter {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-20px) rotate(5deg); }
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--gold); color: var(--dark);
+    padding: .4rem 1.2rem; border-radius: 50px;
+    font-size: .8rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .1em; margin-bottom: 1.5rem;
+    animation: fadeUp .6s ease forwards;
+  }
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900; color: #fff;
+    line-height: 1.1; margin-bottom: 1.5rem;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-text h1 em { color: var(--gold); font-style: italic; }
+  .hero-text p {
+    color: rgba(255,255,255,.85); font-size: 1.15rem;
+    line-height: 1.7; max-width: 480px; margin-bottom: 2.5rem;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .6s .6s ease both; }
+  .btn-primary {
+    background: var(--gold); color: var(--dark);
+    padding: 1rem 2.5rem; border-radius: 50px;
+    font-weight: 800; font-size: 1rem; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(240,192,64,.5); }
+  .btn-secondary {
+    background: rgba(255,255,255,.15); color: #fff;
+    padding: 1rem 2.5rem; border-radius: 50px;
+    font-weight: 700; font-size: 1rem; text-decoration: none;
+    border: 2px solid rgba(255,255,255,.4);
+    transition: background .2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,.25); }
+
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    position: relative; z-index: 1;
+    animation: fadeUp .6s .5s ease both;
+  }
+  .hero-cards-stack { position: relative; width: 380px; height: 420px; }
+  .hcard {
+    position: absolute; border-radius: 20px;
+    padding: 1.8rem; color: #fff;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    transition: transform .3s;
+  }
+  .hcard:hover { transform: scale(1.03); }
+  .hcard-1 {
+    background: linear-gradient(135deg, #f05a40, #f08040);
+    width: 220px; top: 0; left: 0;
+    transform: rotate(-5deg);
+  }
+  .hcard-2 {
+    background: linear-gradient(135deg, #1a7a6e, #2ba898);
+    width: 240px; top: 100px; right: 0;
+    transform: rotate(3deg);
+  }
+  .hcard-3 {
+    background: linear-gradient(135deg, #f0c040, #f09040);
+    width: 200px; bottom: 0; left: 60px;
+    transform: rotate(-2deg);
+  }
+  .hcard-flag { font-size: 2.5rem; margin-bottom: .5rem; }
+  .hcard h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: .3rem; }
+  .hcard p { font-size: .85rem; opacity: .9; line-height: 1.5; }
+
+  /* ─── FLAGS BANNER ─── */
+  .flags-banner {
+    background: var(--dark);
+    padding: 1.5rem 4rem;
+    display: flex; align-items: center; justify-content: center; gap: 4rem;
+    overflow: hidden;
+  }
+  .flag-item { display: flex; align-items: center; gap: .8rem; color: rgba(255,255,255,.7); font-size: .9rem; font-weight: 700; }
+  .flag-item span:first-child { font-size: 2rem; }
+
+  /* ─── SECTIONS BASE ─── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-size: .75rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .2em; color: var(--teal-light);
+    margin-bottom: .8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900; line-height: 1.15;
+    color: var(--dark); margin-bottom: 1.2rem;
+  }
+  .section-title em { color: var(--teal); font-style: italic; }
+  .section-sub { color: var(--soft); font-size: 1.05rem; line-height: 1.7; max-width: 600px; }
+
+  /* ─── ABOUT ─── */
+  #about {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+    background: #fff;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-frame {
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    border-radius: 30px 30px 80px 30px;
+    padding: 3rem; text-align: center;
+    box-shadow: 0 30px 80px rgba(26,122,110,.2);
+  }
+  .about-img-frame .big-emoji { font-size: 5rem; margin-bottom: 1rem; display: block; }
+  .about-img-frame h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: #fff; margin-bottom: .5rem;
+  }
+  .about-img-frame p { color: rgba(255,255,255,.85); line-height: 1.6; }
+  .about-badge-float {
+    position: absolute; top: -20px; right: -20px;
+    background: var(--gold); border-radius: 20px;
+    padding: 1rem 1.5rem; text-align: center;
+    box-shadow: 0 10px 30px rgba(240,192,64,.3);
+  }
+  .about-badge-float .num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--dark); display: block; }
+  .about-badge-float .lbl { font-size: .75rem; font-weight: 800; color: var(--dark); opacity: .7; text-transform: uppercase; }
+  .about-text { }
+  .about-text .section-sub { margin-bottom: 2rem; }
+  .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+  .feat {
+    background: var(--cream); border-radius: 16px;
+    padding: 1.2rem; border-left: 4px solid var(--teal);
+  }
+  .feat-icon { font-size: 1.5rem; margin-bottom: .5rem; }
+  .feat h4 { font-size: .95rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; }
+  .feat p { font-size: .82rem; color: var(--soft); line-height: 1.5; }
+
+  /* ─── LANGUAGES ─── */
+  #languages { background: var(--cream); }
+  .lang-header { text-align: center; margin-bottom: 4rem; }
+  .lang-header .section-sub { margin: 0 auto; }
+  .lang-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .lang-card {
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,.08);
+    transition: transform .3s, box-shadow .3s;
+    background: #fff;
+  }
+  .lang-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,.15); }
+  .lang-card-top {
+    padding: 2.5rem; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .lang-card-top::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: .08;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-rule='evenodd'%3E%3Ccircle cx='20' cy='20' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .lang-en .lang-card-top  { background: linear-gradient(135deg, #1a5f9e, #2e86de); }
+  .lang-fr .lang-card-top  { background: linear-gradient(135deg, #003399, #002266); }
+  .lang-es .lang-card-top  { background: linear-gradient(135deg, #c60b1e, #aa0015); }
+  .lang-flag { font-size: 4rem; margin-bottom: .8rem; display: block; }
+  .lang-card-top h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff; }
+  .lang-card-top p { color: rgba(255,255,255,.8); font-size: .9rem; margin-top: .3rem; }
+  .lang-card-body { padding: 1.8rem; }
+  .level-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.2rem; }
+  .level-tag {
+    background: var(--cream); border: 2px solid #e8e8e8;
+    border-radius: 50px; padding: .3rem .9rem;
+    font-size: .78rem; font-weight: 800; color: var(--text);
+  }
+  .lang-features { list-style: none; }
+  .lang-features li {
+    display: flex; align-items: flex-start; gap: .6rem;
+    font-size: .9rem; color: var(--soft); margin-bottom: .5rem; line-height: 1.5;
+  }
+  .lang-features li::before { content: '✓'; color: var(--teal); font-weight: 900; flex-shrink: 0; }
+
+  /* ─── TEAM ─── */
+  #team {
+    background: var(--dark);
+    text-align: center;
+  }
+  #team .section-title { color: #fff; }
+  #team .section-label { color: var(--gold); }
+  #team .section-sub { color: rgba(255,255,255,.6); margin: 0 auto 4rem; }
+  .team-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+  .team-card {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 24px; padding: 2.5rem;
+    text-align: left;
+    transition: background .3s, transform .3s;
+  }
+  .team-card:hover { background: rgba(255,255,255,.09); transform: translateY(-5px); }
+  .team-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; margin-bottom: 1.2rem;
+    border: 3px solid var(--gold);
+  }
+  .team-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: .2rem; }
+  .team-role { color: var(--gold); font-size: .85rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 1rem; }
+  .team-card p { color: rgba(255,255,255,.65); font-size: .9rem; line-height: 1.7; margin-bottom: 1rem; }
+  .team-langs { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .team-lang {
+    background: rgba(255,255,255,.08); border-radius: 50px;
+    padding: .3rem .9rem; font-size: .78rem; color: rgba(255,255,255,.7); font-weight: 700;
+  }
+
+  /* ─── ACTIVIDADES ─── */
+  #actividades { background: #fff; }
+  .act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .act-card {
+    border-radius: 20px; padding: 2rem;
+    border: 2px solid #f0f0f0;
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .act-card:hover { border-color: var(--teal-light); box-shadow: 0 10px 30px rgba(26,122,110,.1); }
+  .act-icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+  }
+  .act-icon.teal  { background: rgba(26,122,110,.1); }
+  .act-icon.gold  { background: rgba(240,192,64,.15); }
+  .act-icon.coral { background: rgba(240,90,64,.1); }
+  .act-icon.blue  { background: rgba(30,120,200,.1); }
+  .act-card h4 { font-size: 1.05rem; font-weight: 800; color: var(--dark); margin-bottom: .4rem; }
+  .act-card p { font-size: .9rem; color: var(--soft); line-height: 1.6; }
+  .act-aside {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    border-radius: 24px; padding: 3rem; color: #fff;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .act-aside h3 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; }
+  .act-aside p { opacity: .85; line-height: 1.7; margin-bottom: 1.5rem; }
+  .act-aside .dates { font-size: .9rem; font-weight: 700; opacity: .7; }
+  #actividades .inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: start; }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonios { background: var(--cream); }
+  .test-header { text-align: center; margin-bottom: 3rem; }
+  .test-header .section-sub { margin: 0 auto; }
+  .test-stars { color: var(--gold); font-size: 1.5rem; margin-bottom: .5rem; }
+  .test-rating { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--dark); line-height: 1; }
+  .test-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .test-card {
+    background: #fff; border-radius: 20px;
+    padding: 2rem; box-shadow: 0 5px 25px rgba(0,0,0,.06);
+  }
+  .test-card .quote { font-size: 3rem; color: var(--teal-light); line-height: .8; margin-bottom: .8rem; font-family: serif; }
+  .test-card p { font-size: .92rem; color: var(--text); line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+  .test-author { display: flex; align-items: center; gap: .8rem; }
+  .test-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: .9rem;
+  }
+  .test-name { font-weight: 800; font-size: .9rem; color: var(--dark); }
+  .test-meta { font-size: .78rem; color: var(--soft); }
+
+  /* ─── CONTACT ─── */
+  #contacto {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  #contacto .section-title { color: #fff; }
+  #contacto .section-label { color: var(--gold); }
+  #contacto .section-sub { color: rgba(255,255,255,.75); }
+  .contact-info { }
+  .contact-info .section-sub { margin-bottom: 2rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .c-item { display: flex; align-items: center; gap: 1rem; }
+  .c-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .c-item-text h4 { color: #fff; font-size: .9rem; font-weight: 800; }
+  .c-item-text p, .c-item-text a { color: rgba(255,255,255,.7); font-size: .9rem; text-decoration: none; }
+  .c-item-text a:hover { color: var(--gold); }
+  .contact-form {
+    background: rgba(255,255,255,.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px; padding: 2.5rem;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .contact-form h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff; margin-bottom: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; color: rgba(255,255,255,.8); font-size: .85rem; font-weight: 700; margin-bottom: .4rem; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px; padding: .8rem 1rem;
+    color: #fff; font-family: 'Nunito', sans-serif;
+    font-size: .95rem; outline: none;
+    transition: border-color .2s, background .2s;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,.4); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold); background: rgba(255,255,255,.18); }
+  .form-group select option { color: var(--dark); background: #fff; }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .submit-btn {
+    width: 100%; background: var(--gold); color: var(--dark);
+    border: none; border-radius: 50px; padding: 1rem;
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+    cursor: pointer; text-transform: uppercase; letter-spacing: .1em;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,192,64,.4); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    padding: 3rem 4rem;
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand .nav-logo { margin-bottom: 1rem; display: inline-block; }
+  .footer-brand p { color: rgba(255,255,255,.5); font-size: .88rem; line-height: 1.7; max-width: 240px; }
+  .footer-col h4 { color: #fff; font-size: .9rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.2rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .footer-col ul a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .88rem; transition: color .2s; }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-bottom {
+    background: rgba(0,0,0,.3);
+    padding: 1.2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,.3); font-size: .8rem;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #about, #actividades .inner, #contacto { grid-template-columns: 1fr; }
+    .lang-cards, .team-cards, .test-cards { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem 1.5rem; }
+    .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; padding: 1rem; }
+    .act-grid { grid-template-columns: 1fr; }
+    .flags-banner { gap: 1.5rem; flex-wrap: wrap; padding: 1rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .about-badge-float { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">🎓 Sabor a <span>Idiomas</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Nosotros</a></li>
+    <li><a href="#languages">Idiomas</a></li>
+    <li><a href="#team">Profesores</a></li>
+    <li><a href="#actividades">Actividades</a></li>
+    <li><a href="#testimonios">Reseñas</a></li>
+  </ul>
+  <a class="nav-cta" href="#contacto">Empezar ahora</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="floating-letters">
+    <span class="fl">A</span>
+    <span class="fl">Z</span>
+    <span class="fl">é</span>
+    <span class="fl">ñ</span>
+    <span class="fl">R</span>
+  </div>
+  <div class="hero-text">
+    <span class="hero-badge">✨ Tu aprendizaje con calidad</span>
+    <h1>Aprende, <em>viaja</em> y aplica tu idioma</h1>
+    <p>Somos tus Profesores Particulares de Inglés, Francés y Español. Clases Online y a Domicilio adaptadas a tu ritmo, desde cero hasta nivel avanzado.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#contacto">Quiero aprender →</a>
+      <a class="btn-secondary" href="#languages">Ver idiomas</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-cards-stack">
+      <div class="hcard hcard-1">
+        <span class="hcard-flag">🇬🇧</span>
+        <h3>English</h3>
+        <p>Business · IELTS · TOEFL<br>Cambridge · A1→C2</p>
+      </div>
+      <div class="hcard hcard-2">
+        <span class="hcard-flag">🇫🇷</span>
+        <h3>Français</h3>
+        <p>DELF · DALF · A1→C2<br>Conversación & gramática</p>
+      </div>
+      <div class="hcard hcard-3">
+        <span class="hcard-flag">🇪🇸</span>
+        <h3>Español</h3>
+        <p>DELE · Refuerzo escolar<br>A1→C2 · Todos los niveles</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGS BANNER -->
+<div class="flags-banner">
+  <div class="flag-item"><span>🇬🇧</span><span>English</span></div>
+  <div class="flag-item"><span>🇫🇷</span><span>Français</span></div>
+  <div class="flag-item"><span>🇪🇸</span><span>Español</span></div>
+  <div class="flag-item"><span>📍</span><span>Online & Domicilio</span></div>
+  <div class="flag-item"><span>⭐</span><span>5.0 Valoración</span></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-img-frame">
+      <span class="big-emoji">👫</span>
+      <h3>Yurisleydis &amp; Javier</h3>
+      <p>Una joven pareja apasionada de los idiomas con más de 15 años de experiencia enseñando en instituciones educativas y centros culturales.</p>
+    </div>
+    <div class="about-badge-float">
+      <span class="num">+15</span>
+      <span class="lbl">años de<br>experiencia</span>
+    </div>
+  </div>
+  <div class="about-text reveal">
+    <p class="section-label">Sobre nosotros</p>
+    <h2 class="section-title">El inicio de una <em>aventura</em> educativa</h2>
+    <p class="section-sub">Somos una joven pareja apasionada de los idiomas. Llevamos más de 15 años enseñando en diferentes instituciones. La pandemia nos impulsó a llevar nuestras clases al mundo digital. Hoy enseñamos a alumnos de todo el mundo.</p>
+    <div class="about-features">
+      <div class="feat">
+        <div class="feat-icon">🎯</div>
+        <h4>Marco Europeo</h4>
+        <p>Basado en el MCER: A1–A2, B1–B2, C1–C2</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🖥️</div>
+        <h4>Online & Domicilio</h4>
+        <p>Flexibilidad total, tú decides cómo aprender</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📝</div>
+        <h4>Exámenes Oficiales</h4>
+        <p>DELE, DELF, DALF, IELTS, TOEFL, Cambridge</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">💡</div>
+        <h4>Clases Personalizadas</h4>
+        <p>Adaptadas a tu nivel, ritmo y objetivos</p>
+      </div>
+    </div>
+    <a class="btn-primary" href="#contacto" style="display:inline-block;color:var(--dark)">Conocer más →</a>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages">
+  <div class="lang-header reveal">
+    <p class="section-label">Nuestros Idiomas</p>
+    <h2 class="section-title">Tres idiomas, <em>infinitas</em> posibilidades</h2>
+    <p class="section-sub">Trabajamos las cuatro habilidades: comprensión oral, producción oral, comprensión escrita y producción escrita.</p>
+  </div>
+  <div class="lang-cards">
+    <div class="lang-card lang-en reveal">
+      <div class="lang-card-top">
+        <span class="lang-flag">🇬🇧</span>
+        <h3>English</h3>
+        <p>Inglés para todos los niveles y objetivos</p>
+      </div>
+      <div class="lang-card-body">
+        <div class="level-tags">
+          <span class="level-tag">A1</span><span class="level-tag">A2</span>
+          <span class="level-tag">B1</span><span class="level-tag">B2</span>
+          <span class="level-tag">C1</span><span class="level-tag">C2</span>
+        </div>
+        <ul class="lang-features">
+          <li>Business English (marketing, finanzas, RRHH)</li>
+          <li>Preparación Cambridge, IELTS, TOEFL</li>
+          <li>Refuerzo escolar y universitario</li>
+          <li>Conversación y pronunciación</li>
+          <li>Gramática comentada en profundidad</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lang-card lang-fr reveal">
+      <div class="lang-card-top">
+        <span class="lang-flag">🇫🇷</span>
+        <h3>Français</h3>
+        <p>Francés con la pasión de la Alianza Francesa</p>
+      </div>
+      <div class="lang-card-body">
+        <div class="level-tags">
+          <span class="level-tag">A1</span><span class="level-tag">A2</span>
+          <span class="level-tag">B1</span><span class="level-tag">B2</span>
+          <span class="level-tag">C1</span><span class="level-tag">C2</span>
+        </div>
+        <ul class="lang-features">
+          <li>Nivel Avanzado: DELF &amp; DALF</li>
+          <li>Refuerzo escolar y preparación universitaria</li>
+          <li>Conversación y cultura francesa</li>
+          <li>Gramática española–francesa comparada</li>
+          <li>Clases para empresas y profesionales</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lang-card lang-es reveal">
+      <div class="lang-card-top">
+        <span class="lang-flag">🇪🇸</span>
+        <h3>Español</h3>
+        <p>Español nativo para extranjeros y refuerzo</p>
+      </div>
+      <div class="lang-card-body">
+        <div class="level-tags">
+          <span class="level-tag">A1</span><span class="level-tag">A2</span>
+          <span class="level-tag">B1</span><span class="level-tag">B2</span>
+          <span class="level-tag">C1</span><span class="level-tag">C2</span>
+        </div>
+        <ul class="lang-features">
+          <li>DELE – examen oficial de español</li>
+          <li>Refuerzo escolar para Bachillerato</li>
+          <li>Español para extranjeros (todas las edades)</li>
+          <li>Literatura y composición escrita</li>
+          <li>Clases de vida social y comunicación</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <p class="section-label">Nuestros Profesores</p>
+  <h2 class="section-title">Conoce a tus <em>profes</em></h2>
+  <p class="section-sub">Dos educadores apasionados y experimentados, dedicados al éxito académico y personal de cada alumno.</p>
+  <div class="team-cards">
+    <div class="team-card reveal">
+      <div class="team-avatar">🧑‍🏫</div>
+      <h3>Yurisleydis Olivó</h3>
+      <p class="team-role">Profe de Français · Español</p>
+      <p>Desde pequeña le apasionó la enseñanza. Estudió Ingeniería Informática, luego Español Literatura y se enamoró del francés en la Alianza Francesa alcanzando nivel Avanzado. También escribe poesía y reflexiones en su web <em>paradauniverso.com</em>.</p>
+      <div class="team-langs">
+        <span class="team-lang">🇫🇷 Français</span>
+        <span class="team-lang">🇪🇸 Español</span>
+        <span class="team-lang">🎹 Piano</span>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-avatar">👨‍🏫</div>
+      <h3>Javier</h3>
+      <p class="team-role">Profesor de English</p>
+      <p>Maestro de Primaria reconvertido en especialista de idiomas. Estudió Psicología y luego Licenciatura en Lenguas Extranjeras Inglés. En proceso de Máster. Apasionado del violín, el chino mandarín y las novelas manhwas.</p>
+      <div class="team-langs">
+        <span class="team-lang">🇬🇧 English</span>
+        <span class="team-lang">🎻 Violín</span>
+        <span class="team-lang">🀄 Mandarín</span>
+      </div>
+    </div>
+  </div>
+  <p style="color:rgba(255,255,255,.4);font-size:.85rem;margin-top:2rem;text-align:center">Más profesores próximamente — ¡el equipo sigue creciendo!</p>
+</section>
+
+<!-- ACTIVIDADES -->
+<section id="actividades">
+  <div class="inner">
+    <div>
+      <p class="section-label reveal">Actividades</p>
+      <h2 class="section-title reveal">Más allá de la <em>clase</em></h2>
+      <div class="act-grid">
+        <div class="act-card reveal">
+          <div class="act-icon teal">🗣️</div>
+          <div>
+            <h4>Encuentros Culturales</h4>
+            <p>Reuniones mensuales de 1h en Google Meet para practicar producción oral en inglés, francés o español. ¡Gratuito para alumnos!</p>
+          </div>
+        </div>
+        <div class="act-card reveal">
+          <div class="act-icon gold">📖</div>
+          <div>
+            <h4>Recursos Didácticos</h4>
+            <p>Materiales, ejercicios y guías de estudio preparados especialmente para cada nivel y objetivo.</p>
+          </div>
+        </div>
+        <div class="act-card reveal">
+          <div class="act-icon coral">🎯</div>
+          <div>
+            <h4>Preparación Exámenes</h4>
+            <p>DELE, DELF, DALF, Cambridge, IELTS, TOEFL: simulacros, técnicas y estrategias de examen.</p>
+          </div>
+        </div>
+        <div class="act-card reveal">
+          <div class="act-icon blue">💼</div>
+          <div>
+            <h4>Clases para Empresas</h4>
+            <p>Business English y francés profesional: management, marketing, ventas, logística, dirección técnica.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="act-aside reveal">
+      <h3>🗓️ Próximos Encuentros</h3>
+      <p>Participa en nuestros encuentros educativos gratuitos vía Google Meet. Necesitas inscribirte indicando nombre y apellidos. Se enviará el material al inscribirte.</p>
+      <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:1.2rem;margin-bottom:1rem;">
+        <strong style="color:var(--gold)">Español A2</strong><br>
+        <span style="font-size:.88rem;opacity:.85">Profe Yuris · 10:00–11:00 · En línea</span>
+      </div>
+      <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:1.2rem;margin-bottom:1rem;">
+        <strong style="color:var(--gold)">Français B1</strong><br>
+        <span style="font-size:.88rem;opacity:.85">Profe Yuris · 11:00–12:00 · En ligne</span>
+      </div>
+      <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;">
+        <strong style="color:var(--gold)">English B1</strong><br>
+        <span style="font-size:.88rem;opacity:.85">Profe Javier · 12:00–13:00 · Online</span>
+      </div>
+      <a class="btn-primary" href="#contacto" style="text-align:center;display:block">Inscribirse →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonios">
+  <div class="test-header reveal">
+    <p class="section-label">Nuestros Alumnos</p>
+    <div class="test-stars">★★★★★</div>
+    <div class="test-rating">5.0</div>
+    <h2 class="section-title" style="margin-top:.5rem">Lo que dicen nuestros <em>alumnos</em></h2>
+    <p class="section-sub">La satisfacción de nuestros alumnos es nuestro mayor logro. ¡Aprende, fíjate y aplícalo!</p>
+  </div>
+  <div class="test-cards">
+    <div class="test-card reveal">
+      <div class="quote">"</div>
+      <p>Llevamos solo dos meses con ellos y mi hija ya avanzó. La hace... cada clase es diferente, aprende jugando y con confianza.</p>
+      <div class="test-author">
+        <div class="test-avatar">E</div>
+        <div>
+          <div class="test-name">Emma Bajo-Muñoz</div>
+          <div class="test-meta">Alumna de Español · ★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="quote">"</div>
+      <p>Llevo aproximadamente un mes dando clases de francés con Yuris y la verdad es que me ha encantado todo.</p>
+      <div class="test-author">
+        <div class="test-avatar">R</div>
+        <div>
+          <div class="test-name">Rha Lorentz</div>
+          <div class="test-meta">Alumna de Français · ★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="quote">"</div>
+      <p>El mejor profe que he tenido. Javier explica de una manera muy clara y siempre encuentra la forma de hacerlo interesante. Mi inglés mejoró notablemente.</p>
+      <div class="test-author">
+        <div class="test-avatar">M</div>
+        <div>
+          <div class="test-name">Miguel Torres</div>
+          <div class="test-meta">Alumno de English · ★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contacto">
+  <div class="contact-info reveal">
+    <p class="section-label">Contacto</p>
+    <h2 class="section-title">¿Listo para <em>empezar</em>?</h2>
+    <p class="section-sub">Contáctanos y cuéntanos tus objetivos. Adaptamos las clases a tu nivel, disponibilidad y metas.</p>
+    <div class="contact-items" style="margin-top:2rem">
+      <div class="c-item">
+        <div class="c-icon">📧</div>
+        <div class="c-item-text">
+          <h4>Email</h4>
+          <a href="mailto:saboraidiomas@gmail.com">saboraidiomas@gmail.com</a>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">🌐</div>
+        <div class="c-item-text">
+          <h4>Web</h4>
+          <a href="https://saboraidiomas.com" target="_blank">saboraidiomas.com</a>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">📍</div>
+        <div class="c-item-text">
+          <h4>Modalidad</h4>
+          <p>Online (Google Meet) · A domicilio</p>
+        </div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon">📅</div>
+        <div class="c-item-text">
+          <h4>Horario</h4>
+          <p>Lunes–Viernes 9:00–21:00 · Sábados Online</p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;display:flex;gap:1rem">
+      <a href="#" style="background:rgba(255,255,255,.15);color:#fff;padding:.8rem 1.5rem;border-radius:50px;text-decoration:none;font-weight:700;font-size:.85rem;border:1px solid rgba(255,255,255,.3)">▶ YouTube</a>
+      <a href="https://www.paradauniverso.com" target="_blank" style="background:rgba(255,255,255,.15);color:#fff;padding:.8rem 1.5rem;border-radius:50px;text-decoration:none;font-weight:700;font-size:.85rem;border:1px solid rgba(255,255,255,.3)">🌌 paradauniverso.com</a>
+    </div>
+  </div>
+  <div class="contact-form reveal">
+    <h3>Envíanos un mensaje</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" placeholder="Tu nombre">
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+34 600 000 000">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="tu@email.com">
+    </div>
+    <div class="form-group">
+      <label>Idioma de interés</label>
+      <select>
+        <option value="">Selecciona un idioma</option>
+        <option>English (Inglés)</option>
+        <option>Français (Francés)</option>
+        <option>Español</option>
+        <option>Más de uno</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Mensaje</label>
+      <textarea placeholder="Cuéntanos tu nivel actual y tus objetivos..."></textarea>
+    </div>
+    <button class="submit-btn" onclick="this.textContent='✓ Enviado! Te contactamos pronto';this.style.background='#2ba898';this.style.color='#fff'">Enviar mensaje</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a class="nav-logo" href="#">🎓 Sabor a <span>Idiomas</span></a>
+    <p>Tu aprendizaje con calidad. Aprende, fíjate y aplícalo. Clases de Inglés, Francés y Español Online y a Domicilio.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Idiomas</h4>
+    <ul>
+      <li><a href="#languages">English</a></li>
+      <li><a href="#languages">Français</a></li>
+      <li><a href="#languages">Español</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Navegación</h4>
+    <ul>
+      <li><a href="#about">Nosotros</a></li>
+      <li><a href="#team">Profesores</a></li>
+      <li><a href="#actividades">Actividades</a></li>
+      <li><a href="#testimonios">Reseñas</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Recursos</h4>
+    <ul>
+      <li><a href="#">El Blog</a></li>
+      <li><a href="#">Galería</a></li>
+      <li><a href="#">Actividades Culturales</a></li>
+      <li><a href="https://www.paradauniverso.com" target="_blank">paradauniverso.com</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2021–2026 Sabor a Idiomas · Todos los derechos reservados</span>
+  <span>Edición y Redacción: Yurisleydis Olivó · Diseño web: Yurisleydis Olivó</span>
+</div>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
