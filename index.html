@@ -5,899 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sabor a Idiomas</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
-<style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --teal: #3a8c8c;
-      --teal-dark: #2a6d6d;
-      --teal-light: #e8f5f5;
-      --gold: #c9a84c;
-      --text: #2c2c2c;
-      --muted: #666;
-      --white: #ffffff;
-      --light-bg: #f9f9f9;
-      --border: #e5e5e5;
-    }
-
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Lato', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
-
-    /* ─── NAVBAR ─── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(80,80,80,0.96); backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 68px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 12px; text-decoration: none;
-    }
-    .nav-logo img {
-      width: 46px; height: 46px; object-fit: contain;
-      filter: brightness(1.1);
-    }
-    .nav-logo span {
-      font-family: 'Dancing Script', cursive; color: #ffffff; font-size: 1.4rem;
-      font-weight: 700; letter-spacing: 0.02em;
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      color: #ffffff; text-decoration: none; font-size: 0.82rem;
-      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 6px 0; border-bottom: 2px solid transparent;
-      transition: border-color .2s, color .2s;
-    }
-    .nav-links a:hover { color: #ffffff; border-bottom-color: var(--gold); }
-
-    /* ─── HERO CAROUSEL ─── */
-    .hero {
-      position: relative; width: 100%; height: 100vh; overflow: hidden;
-      margin-top: 64px;
-    }
-    .carousel-slides { display: flex; width: 400%; height: 100%; transition: transform 0.9s cubic-bezier(.77,0,.18,1); }
-    .carousel-slide {
-      width: 25%; height: 100%; flex-shrink: 0; position: relative;
-      background-size: cover; background-position: center;
-    }
-    .slide-1 { background: url('./img/conocimientos.webp') center/cover no-repeat; }
-    .slide-2 { background: url('./img/English.webp') center/cover no-repeat; }
-    .slide-3 { background: url('./img/frances.webp') center/cover no-repeat; }
-    .slide-4 { background: url('./img/Alumnos.webp') center/cover no-repeat; }
-
-    /* Animated letters bg */
-    .slide-letters {
-      position: absolute; inset: 0; overflow: hidden; opacity: 0.15;
-    }
-    .letter {
-      position: absolute; font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 7rem); font-weight: 900; color: var(--white);
-      animation: floatLetter 8s ease-in-out infinite;
-    }
-    @keyframes floatLetter {
-      0%, 100% { transform: translateY(0) rotate(var(--r)); }
-      50% { transform: translateY(-20px) rotate(calc(var(--r) + 10deg)); }
-    }
-
-    .slide-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.45) 0%, rgba(0,0,0,.65) 100%);
-    }
-    .slide-content {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 0 60px; color: var(--white);
-    }
-    .slide-tag {
-      display: inline-block; background: var(--gold); color: var(--white);
-      font-size: 0.72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
-      padding: 5px 16px; border-radius: 20px; margin-bottom: 20px;
-    }
-    .slide-content h1 {
-      font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 4.5rem);
-      font-weight: 900; line-height: 1.1; margin-bottom: 18px;
-      text-shadow: 0 2px 16px rgba(0,0,0,.4);
-    }
-    .slide-content p {
-      font-size: 1.1rem; font-weight: 300; max-width: 580px; line-height: 1.7;
-      opacity: .9; margin-bottom: 30px;
-    }
-    .slide-btn {
-      display: inline-block; background: var(--gold); color: var(--white);
-      padding: 13px 34px; border-radius: 30px; font-weight: 700; font-size: 0.9rem;
-      letter-spacing: .05em; text-decoration: none; text-transform: uppercase;
-      transition: transform .2s, box-shadow .2s;
-    }
-    .slide-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
-
-    /* Carousel controls */
-    .carousel-prev, .carousel-next {
-      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-      background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.4);
-      color: var(--white); width: 50px; height: 50px; border-radius: 50%;
-      cursor: pointer; font-size: 1.3rem; display: flex; align-items: center;
-      justify-content: center; transition: background .2s; backdrop-filter: blur(4px);
-    }
-    .carousel-prev:hover, .carousel-next:hover { background: rgba(255,255,255,.3); }
-    .carousel-prev { left: 24px; }
-    .carousel-next { right: 24px; }
-
-    .carousel-dots {
-      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 10px; z-index: 10;
-    }
-    .dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: rgba(255,255,255,.4); cursor: pointer; transition: all .3s;
-    }
-    .dot.active { background: var(--white); transform: scale(1.3); }
-
-    /* ─── SECTIONS ─── */
-    section { padding: 80px 0; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
-    .section-title {
-      font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
-      color: var(--text); margin-bottom: 10px;
-    }
-    .section-title span { color: var(--teal); }
-    .section-subtitle {
-      font-size: 0.9rem; color: var(--muted); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 50px;
-    }
-
-    /* ─── ABOUT / INTRO ─── */
-    .about { background: var(--white); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .about-card {
-      padding: 36px; border: 1px solid var(--border); border-radius: 12px;
-      background: var(--white); transition: box-shadow .3s;
-    }
-    .about-card:hover { box-shadow: 0 8px 32px rgba(58,140,140,.1); }
-    .about-card-img {
-      width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;
-      background: var(--teal-light); display: flex; align-items: center; justify-content: center;
-      font-size: 4rem;
-    }
-    .about-card h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-      color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px;
-    }
-    .about-card p { font-size: 0.9rem; line-height: 1.8; color: var(--muted); }
-
-    .about-card-img img {
-      width: 100%;
-      height: 200px;
-    }
-
-    /* ─── BIENVENIDOS BANNER ─── */
-    .bienvenidos {
-      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
-      padding: 60px 0; text-align: center;
-    }
-    .bienvenidos h2 {
-      font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900;
-      color: var(--white); margin-bottom: 24px; letter-spacing: .05em;
-    }
-    .bienvenidos-btn {
-      display: inline-block; background: var(--gold); color: var(--white);
-      padding: 14px 40px; border-radius: 30px; font-weight: 700; font-size: 0.95rem;
-      text-decoration: none; letter-spacing: .05em; text-transform: uppercase;
-      transition: transform .2s, box-shadow .2s;
-    }
-    .bienvenidos-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
-
-    /* ─── EL INICIO ─── */
-    .inicio { background: var(--white); }
-    .inicio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .inicio-img {
-      border-radius: 14px; overflow: hidden; background: var(--teal-light);
-      height: 340px; display: flex; align-items: center; justify-content: center;
-      font-size: 5rem; box-shadow: 0 12px 40px rgba(58,140,140,.15);
-    }
-    .inicio-img img {
-      height: 340px;
-    }
-
-    .inicio-text h2 {
-      font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700;
-      color: var(--text); margin-bottom: 18px; line-height: 1.2;
-    }
-    .inicio-text p { font-size: 0.92rem; color: var(--muted); line-height: 1.9; margin-bottom: 14px; }
-
-    /* ─── NOS PRESENTAMOS (Videos) ─── */
-    .videos { background: var(--light-bg); }
-
-    /* Inline YouTube player */
-    .yt-wrap {
-      position: relative; border-radius: 12px; overflow: hidden;
-      background: #000; box-shadow: 0 4px 24px rgba(0,0,0,.18);
-      cursor: pointer;
-    }
-    /* The thumbnail layer */
-    .yt-thumb {
-      display: block; position: relative; width: 100%;
-      aspect-ratio: 16/9; overflow: hidden;
-      transition: opacity .25s;
-    }
-    .yt-thumb img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block; transition: transform .3s;
-    }
-    .yt-wrap:hover .yt-thumb img { transform: scale(1.02); }
-
-    /* Top bar overlay */
-    .yt-topbar {
-      position: absolute; top: 0; left: 0; right: 0;
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 14px;
-      background: linear-gradient(to bottom, rgba(0,0,0,.75) 0%, transparent 100%);
-      pointer-events: none;
-    }
-    .yt-avatar {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--teal); display: flex; align-items: center;
-      justify-content: center; font-size: 14px; flex-shrink: 0;
-    }
-    .yt-title-text { color: #fff; font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
-    .yt-dots { margin-left: auto; color: rgba(255,255,255,.8); font-size: 1.3rem; }
-
-    /* Play button */
-    .yt-play-wrap {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-    }
-    .yt-play-btn {
-      width: 68px; height: 48px; background: #ff0000; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,.5);
-      transition: background .2s, transform .2s;
-    }
-    .yt-wrap:hover .yt-play-btn { background: #cc0000; transform: scale(1.1); }
-    .yt-play-btn svg { width: 26px; height: 26px; fill: white; }
-
-    .yt-play-btn-sm {
-      width: 56px; height: 40px; background: #ff0000; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,.4);
-      transition: background .2s, transform .2s;
-    }
-    .yt-wrap:hover .yt-play-btn-sm { background: #cc0000; transform: scale(1.1); }
-    .yt-play-btn-sm svg { width: 20px; height: 20px; fill: white; }
-
-    /* Bottom bar */
-    .yt-bottom {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 8px 12px;
-      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 100%);
-      pointer-events: none;
-    }
-    .yt-ver-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0,0,0,.8); color: #fff; border: none;
-      font-size: 0.72rem; font-weight: 700; padding: 5px 10px;
-      border-radius: 4px; pointer-events: all; cursor: pointer;
-      text-decoration: none; transition: background .2s;
-    }
-    .yt-ver-btn:hover { background: #111; }
-
-    /* The iframe replaces the thumbnail on click */
-    .yt-iframe-wrap {
-      display: none; position: relative; width: 100%;
-      aspect-ratio: 16/9; background: #000;
-    }
-    .yt-iframe-wrap iframe {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      border: none;
-    }
-    .yt-wrap.playing .yt-thumb      { display: none; }
-    .yt-wrap.playing .yt-iframe-wrap { display: block; }
-
-    .yt-label {
-      font-size: 0.82rem; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--teal); margin-top: 10px;
-      display: block;
-    }
-    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-        /* ─── ALUMNOS ─── */
-    .alumnos { background: var(--teal-dark); }
-    .alumnos .section-title { color: var(--white); }
-    .alumnos .section-subtitle { color: rgba(255,255,255,.6); }
-    .stars { color: var(--gold); font-size: 1.2rem; margin-bottom: 8px; }
-    .rating-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 30px; padding: 10px 20px; margin-bottom: 40px; color: var(--white);
-    }
-    .rating-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .review-card {
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px; padding: 28px; transition: background .3s;
-    }
-    .review-card:hover { background: rgba(255,255,255,.14); }
-    .review-card p {
-      font-size: 0.9rem; color: rgba(255,255,255,.85); line-height: 1.8;
-      font-style: italic; margin-bottom: 16px;
-    }
-    .reviewer { display: flex; align-items: center; gap: 12px; }
-    .reviewer-avatar {
-      width: 40px; height: 40px; border-radius: 50%; background: var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--white); font-weight: 700; font-size: 1rem;
-    }
-    .reviewer-name { font-weight: 700; color: var(--white); font-size: 0.9rem; }
-    .reviewer-date { font-size: 0.78rem; color: rgba(255,255,255,.5); }
-    .review-link { color: var(--gold); font-size: 0.8rem; text-decoration: none; display: inline-block; margin-top: 10px; }
-
-    .carousel-nav {
-      display: flex; justify-content: center; gap: 10px; margin-top: 36px;
-    }
-    .carousel-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,.3); cursor: pointer; transition: all .3s;
-    }
-    .carousel-dot.active { background: var(--white); transform: scale(1.3); }
-
-    /* ─── RECURSOS / DEMO GRATIS ─── */
-    .recursos {
-      background: var(--white);
-      padding: 90px 0;
-      position: relative; overflow: hidden;
-    }
-
-    /* Diagonal accent band */
-    .recursos::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, var(--teal-light) 0%, transparent 55%);
-      pointer-events: none;
-    }
-
-    .recursos-wrap {
-      position: relative; z-index: 1;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
-    }
-
-    /* LEFT — copy */
-    .recursos-copy {}
-    .recursos-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--teal-light); color: var(--teal-dark);
-      font-size: 0.72rem; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; padding: 5px 14px; border-radius: 20px;
-      margin-bottom: 20px; border: 1px solid rgba(58,140,140,.2);
-    }
-    .recursos-eyebrow .pulse-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--teal); animation: rPulse 2s ease infinite;
-    }
-    @keyframes rPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.5} }
-
-    .recursos-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.9rem, 3vw, 2.8rem);
-      font-weight: 900; color: var(--text); line-height: 1.15;
-      margin-bottom: 18px;
-    }
-    .recursos-title span { color: var(--teal); }
-
-    .recursos-desc {
-      font-size: 0.96rem; color: var(--muted);
-      line-height: 1.85; margin-bottom: 32px;
-    }
-
-    /* perks list */
-    .recursos-perks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
-    .r-perk {
-      display: flex; align-items: flex-start; gap: 14px;
-    }
-    .r-perk-icon {
-      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-      background: var(--teal-light); border: 1px solid rgba(58,140,140,.2);
-      display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    }
-    .r-perk-text strong {
-      display: block; font-size: 0.88rem; font-weight: 700;
-      color: var(--text); margin-bottom: 2px;
-    }
-    .r-perk-text span { font-size: 0.82rem; color: var(--muted); }
-
-    /* idioma chips */
-    .idioma-chips { display: flex; gap: 10px; flex-wrap: wrap; }
-    .idioma-chip {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: 30px; padding: 7px 16px; font-size: 0.82rem;
-      font-weight: 700; color: var(--text); cursor: pointer;
-      transition: border-color .2s, background .2s, transform .15s;
-    }
-    .idioma-chip:hover,
-    .idioma-chip.active {
-      border-color: var(--teal); background: var(--teal-light);
-      color: var(--teal-dark); transform: translateY(-2px);
-    }
-
-    /* RIGHT — form card */
-    .recursos-card {
-      background: var(--white); border-radius: 20px;
-      border: 1px solid var(--border);
-      box-shadow: 0 20px 60px rgba(58,140,140,.1);
-      overflow: hidden;
-    }
-    .recursos-card-header {
-      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
-      padding: 28px 32px;
-    }
-    .recursos-card-header h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem;
-      font-weight: 700; color: var(--white); margin-bottom: 6px;
-    }
-    .recursos-card-header p {
-      font-size: 0.83rem; color: rgba(255,255,255,.75); line-height: 1.6;
-    }
-    .r-spots {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-      border-radius: 20px; padding: 4px 12px; font-size: 0.72rem;
-      font-weight: 700; color: var(--white); margin-top: 12px;
-      letter-spacing: .05em;
-    }
-    .r-spots .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: rPulse 1.5s ease infinite; }
-
-    .recursos-card-body { padding: 32px; }
-
-    .r-field { margin-bottom: 18px; }
-    .r-field label {
-      display: block; font-size: 0.74rem; font-weight: 700;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 7px;
-    }
-    .r-field input,
-    .r-field select {
-      width: 100%; padding: 13px 16px;
-      border: 1.5px solid var(--border); border-radius: 10px;
-      font-family: 'Lato', sans-serif; font-size: 0.93rem;
-      color: var(--text); background: var(--white);
-      transition: border-color .2s, box-shadow .2s; outline: none;
-      -webkit-appearance: none;
-    }
-    .r-field input:focus,
-    .r-field select:focus {
-      border-color: var(--teal); box-shadow: 0 0 0 3px rgba(58,140,140,.12);
-    }
-    .r-field input::placeholder { color: #bbb; }
-    .r-field-error {
-      font-size: 0.74rem; color: #e53e3e; margin-top: 5px; display: none;
-    }
-
-    .r-submit {
-      width: 100%; padding: 15px; border: none; border-radius: 10px;
-      background: var(--teal); color: var(--white); cursor: pointer;
-      font-family: 'Lato', sans-serif; font-size: 0.95rem; font-weight: 700;
-      letter-spacing: .05em; display: flex; align-items: center;
-      justify-content: center; gap: 10px;
-      transition: background .2s, transform .15s, box-shadow .2s;
-    }
-    .r-submit:hover {
-      background: var(--teal-dark); transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(58,140,140,.3);
-    }
-    .r-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    .r-privacy {
-      font-size: 0.72rem; color: var(--muted); text-align: center;
-      margin-top: 12px; line-height: 1.6;
-    }
-
-    /* success */
-    .r-success {
-      display: none; text-align: center; padding: 12px 0 8px;
-    }
-    .r-success-icon {
-      width: 68px; height: 68px; border-radius: 50%;
-      background: var(--teal-light); display: flex; align-items: center;
-      justify-content: center; font-size: 2.2rem; margin: 0 auto 16px;
-      animation: rPopIn .5s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes rPopIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
-    .r-success h4 {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem;
-      color: var(--teal); margin-bottom: 8px;
-    }
-    .r-success p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
-
-    @media (max-width: 768px) {
-      .recursos-wrap { grid-template-columns: 1fr; gap: 40px; }
-    }
-
-    /* ─── CONTACTO ─── */
-    .contacto { background: var(--white); }
-    .contacto-grid {
-      display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: start;
-    }
-    .contacto-info h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
-      color: var(--text); margin-bottom: 14px;
-    }
-    .contacto-info p {
-      font-size: 0.92rem; color: var(--muted); line-height: 1.8; margin-bottom: 28px;
-    }
-    .contacto-item {
-      display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px;
-    }
-    .contacto-icon {
-      width: 44px; height: 44px; border-radius: 50%; background: var(--teal-light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0; color: var(--teal);
-    }
-    .contacto-item-text strong {
-      display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
-    }
-    .contacto-item-text a,
-    .contacto-item-text span {
-      color: var(--text); text-decoration: none; font-size: 0.95rem; font-weight: 600;
-      transition: color .2s;
-    }
-    .contacto-item-text a:hover { color: var(--teal); }
-
-    /* Form */
-    .contact-form {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 16px; padding: 40px; box-shadow: 0 8px 40px rgba(58,140,140,0.3);
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label {
-      display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%; padding: 12px 16px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-family: 'Lato', sans-serif; font-size: 0.93rem;
-      color: var(--text); background: var(--white); transition: border-color .2s, box-shadow .2s;
-      outline: none; -webkit-appearance: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--teal); box-shadow: 0 0 0 3px rgba(58,140,140,.12);
-    }
-    .form-group textarea { resize: vertical; min-height: 120px; }
-    .form-group select { cursor: pointer; }
-
-    .submit-btn {
-      width: 100%; padding: 15px; background: var(--teal);
-      color: var(--white); border: none; border-radius: 8px;
-      font-family: 'Lato', sans-serif; font-size: 0.95rem; font-weight: 700;
-      letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
-      transition: background .2s, transform .15s, box-shadow .2s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
-    .submit-btn:hover {
-      background: var(--teal-dark); transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(58,140,140,.3);
-    }
-    .submit-btn:active { transform: translateY(0); }
-    .submit-btn:disabled { background: #aaa; cursor: not-allowed; transform: none; }
-
-    .form-success {
-      display: none; text-align: center; padding: 32px 20px;
-    }
-    .form-success .success-icon {
-      width: 64px; height: 64px; background: var(--teal-light); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; margin: 0 auto 16px;
-    }
-    .form-success h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--teal); margin-bottom: 8px;
-    }
-    .form-success p { color: var(--muted); font-size: 0.9rem; }
-
-    .privacy-note {
-      font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 14px; line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-      .contacto-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .contact-form { padding: 28px 20px; }
-    }
-
-
-    /* ─── RECURSOS / DEMO GRATUITA ─── */
-    .recursos {
-      background: linear-gradient(160deg, #0f1e2e 0%, #0a2a22 50%, #1a1a2e 100%);
-      padding: 100px 0; position: relative; overflow: hidden;
-    }
-    .recursos::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 600px 500px at 10% 50%, rgba(45,138,122,.18) 0%, transparent 70%),
-        radial-gradient(ellipse 400px 400px at 85% 20%, rgba(201,151,58,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .recursos-float {
-      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-    }
-    .rf-letter {
-      position: absolute; font-family: 'Playfair Display', serif;
-      font-weight: 900; color: rgba(255,255,255,.03);
-      font-size: clamp(5rem,10vw,12rem);
-      animation: rfFloat 14s ease-in-out infinite;
-    }
-    @keyframes rfFloat {
-      0%,100% { transform: translateY(0) rotate(var(--r)); }
-      50%      { transform: translateY(-22px) rotate(calc(var(--r)+5deg)); }
-    }
-
-    .recursos-inner {
-      position: relative; z-index: 2;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 72px; align-items: center;
-    }
-
-    /* LEFT COPY */
-    .rec-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(201,151,58,.15); border: 1px solid rgba(201,151,58,.35);
-      color: var(--gold); padding: 6px 16px; border-radius: 30px;
-      font-size: 0.72rem; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; margin-bottom: 22px;
-    }
-    .rec-badge .pulse-dot {
-      width: 7px; height: 7px; background: var(--gold); border-radius: 50%;
-      animation: pulseDot 2s ease infinite;
-    }
-    @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
-
-    .rec-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3.2rem);
-      font-weight: 900; line-height: 1.1; color: #ffffff;
-      margin-bottom: 18px;
-    }
-    .rec-title .accent { color: #7ed4c8; font-style: italic; }
-    .rec-title .gold   { color: var(--gold); }
-
-    .rec-desc {
-      font-size: 1rem; color: rgba(255,255,255,.6);
-      line-height: 1.85; margin-bottom: 32px; font-weight: 300;
-    }
-
-    .rec-perks { display: flex; flex-direction: column; gap: 13px; margin-bottom: 36px; }
-    .rec-perk  { display: flex; align-items: center; gap: 13px; }
-    .rec-perk-icon {
-      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
-      background: rgba(45,138,122,.22); border: 1px solid rgba(45,138,122,.4);
-      display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    }
-    .rec-perk span { color: rgba(255,255,255,.8); font-size: 0.92rem; }
-
-    .rec-trust {
-      display: flex; gap: 22px; flex-wrap: wrap;
-    }
-    .rec-trust-item {
-      display: flex; align-items: center; gap: 6px;
-      color: rgba(255,255,255,.38); font-size: 0.75rem;
-    }
-
-    /* RIGHT FORM CARD */
-    .rec-card {
-      background: #ffffff; border-radius: 22px;
-      padding: 40px 38px;
-      box-shadow: 0 40px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06);
-      position: relative; overflow: hidden;
-    }
-    .rec-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--teal) 0%, var(--gold) 100%);
-    }
-
-    .rec-card-eyebrow {
-      display: inline-block; background: var(--teal-light); color: var(--teal-dark);
-      font-size: 0.7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
-    }
-    .rec-card h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
-      color: var(--text); line-height: 1.2; margin-bottom: 6px;
-    }
-    .rec-card .rec-card-sub {
-      font-size: 0.86rem; color: var(--muted); margin-bottom: 26px; line-height: 1.65;
-    }
-
-    /* Urgency bar */
-    .rec-urgency {
-      background: #fff8ec; border: 1px solid rgba(201,151,58,.25);
-      border-radius: 10px; padding: 11px 14px; margin-bottom: 22px;
-      display: flex; align-items: flex-start; gap: 10px;
-    }
-    .rec-urgency-icon { font-size: 1.1rem; flex-shrink: 0; padding-top: 1px; }
-    .rec-urgency-text { font-size: 0.8rem; color: #7a5a1a; line-height: 1.5; }
-    .rec-urgency-text strong { color: #c9973a; }
-    .rec-progress {
-      height: 4px; background: rgba(201,151,58,.2); border-radius: 4px;
-      margin-top: 7px; overflow: hidden;
-    }
-    .rec-progress-fill {
-      height: 100%; background: var(--gold); border-radius: 4px; width: 0%;
-      transition: width 1.2s ease;
-    }
-
-    /* Fields */
-    .rec-field { margin-bottom: 17px; }
-    .rec-field label {
-      display: block; font-size: 0.73rem; font-weight: 700;
-      letter-spacing: .07em; text-transform: uppercase;
-      color: var(--ink-mid, #3d3d5c); margin-bottom: 7px;
-    }
-    .rec-field input,
-    .rec-field select {
-      width: 100%; padding: 13px 16px; border: 1.5px solid var(--border);
-      border-radius: 10px; font-family: 'Lato', sans-serif;
-      font-size: 0.93rem; color: var(--text); background: #ffffff;
-      transition: border-color .2s, box-shadow .2s; outline: none;
-      -webkit-appearance: none; appearance: none;
-    }
-    .rec-field input:focus,
-    .rec-field select:focus {
-      border-color: var(--teal); box-shadow: 0 0 0 3px rgba(58,140,140,.12);
-    }
-    .rec-field input::placeholder { color: #c0c0cc; }
-    .rec-field-error {
-      font-size: 0.74rem; color: #e53e3e;
-      margin-top: 5px; display: none;
-    }
-
-    /* CTA button */
-    .rec-submit {
-      width: 100%; padding: 15px 20px;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
-      color: #ffffff; border: none; border-radius: 11px;
-      font-family: 'Lato', sans-serif; font-size: 0.97rem; font-weight: 700;
-      letter-spacing: .04em; cursor: pointer; margin-top: 4px;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: opacity .2s, transform .15s, box-shadow .2s;
-      box-shadow: 0 6px 20px rgba(45,138,122,.3);
-    }
-    .rec-submit:hover {
-      opacity: .92; transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(45,138,122,.4);
-    }
-    .rec-submit:disabled { background: #aaa; box-shadow: none; cursor: not-allowed; transform: none; }
-    .rec-submit .btn-arrow { transition: transform .2s; }
-    .rec-submit:hover .btn-arrow { transform: translateX(4px); }
-
-    .rec-privacy {
-      font-size: 0.72rem; color: var(--muted); text-align: center;
-      margin-top: 13px; line-height: 1.6;
-    }
-
-    /* Success state */
-    .rec-success {
-      display: none; text-align: center; padding: 16px 0 8px;
-    }
-    .rec-success-icon {
-      width: 76px; height: 76px; border-radius: 50%;
-      background: var(--teal-light); margin: 0 auto 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem;
-      animation: popIn .55s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
-    .rec-success h4 {
-      font-family: 'Playfair Display', serif; font-size: 1.5rem;
-      color: var(--teal); margin-bottom: 10px;
-    }
-    .rec-success p {
-      font-size: 0.88rem; color: var(--muted); line-height: 1.75;
-    }
-    .rec-success .highlight { color: var(--text); font-weight: 700; }
-
-    /* idioma pills under select */
-    .rec-idioma-pills {
-      display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
-    }
-    .rec-pill {
-      padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-      cursor: pointer; border: 1.5px solid var(--border); color: var(--muted);
-      background: #fff; transition: all .18s;
-    }
-    .rec-pill:hover { border-color: var(--teal); color: var(--teal); }
-    .rec-pill.active { background: var(--teal); border-color: var(--teal); color: #fff; }
-
-    @media (max-width: 820px) {
-      .recursos-inner { grid-template-columns: 1fr; gap: 48px; }
-      .rec-card { padding: 28px 22px; }
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: #1a1a1a; color: rgba(255,255,255,.6); padding: 50px 0 30px;
-    }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-    .footer-brand { }
-    .footer-brand .logo-text {
-      font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: var(--white); margin-bottom: 14px;
-    }
-    .footer-brand p { font-size: 0.85rem; line-height: 1.8; }
-    .footer-brand a { color: var(--teal); text-decoration: none; }
-    .footer-col h4 {
-      color: var(--white); font-size: 0.85rem; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase; margin-bottom: 16px;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 10px; }
-    .footer-col ul li a { color: rgba(255,255,255,.6); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
-    .footer-col ul li a:hover { color: var(--teal); }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    }
-    .footer-bottom p { font-size: 0.8rem; }
-    .powered {
-      display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: rgba(255,255,255,.4);
-    }
-    .godaddy-tag {
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-      padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; color: rgba(255,255,255,.5);
-    }
-
-    /* ─── SCROLL REVEAL ─── */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── RESPONSIVE ─── */
-    /* ─── HAMBURGER ─── */
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px; cursor: pointer;
-      background: none; border: none; padding: 6px; z-index: 1100;
-    }
-    .hamburger span {
-      display: block; width: 26px; height: 2px; background: #ffffff;
-      border-radius: 2px; transition: all .35s cubic-bezier(.77,0,.18,1);
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-menu {
-      display: none; position: fixed; top: 68px; left: 0; right: 0; z-index: 999;
-      background: rgba(60,60,60,0.98); backdrop-filter: blur(12px);
-      flex-direction: column; padding: 20px 32px 28px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      transform: translateY(-10px); opacity: 0;
-      transition: transform .35s ease, opacity .35s ease;
-      pointer-events: none;
-    }
-    .mobile-menu.open {
-      display: flex; transform: translateY(0); opacity: 1; pointer-events: all;
-    }
-    .mobile-menu a {
-      color: #ffffff; text-decoration: none; font-size: 1.1rem;
-      font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08);
-      transition: color .2s, padding-left .2s;
-    }
-    .mobile-menu a:last-child { border-bottom: none; }
-    .mobile-menu a:hover { color: var(--gold); padding-left: 8px; }
-
-    @media (max-width: 768px) {
-      .about-grid, .inicio-grid, .reviews-grid, .video-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .slide-content h1 { font-size: 2rem; }
-      .slide-content p { font-size: 0.9rem; }
-      nav { padding: 0 24px; }
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
@@ -966,7 +74,7 @@
       <div class="slide-overlay"></div>
       <div class="slide-content">
         <span class="slide-tag">Hablar · Leer · Escuchar · Escribir</span>
-        <h1>Inglés, Español y Francés a Tu Nivel</h1>
+        <h1>Inglés, Español y Francés</h1>
         <p>Trabajamos los niveles A1, A2, B1, B2, C1, C2 del Marco Común Europeo de Referencia para las lenguas. Aprende a comunicarte de verdad.</p>
         <a href="#videos" class="slide-btn">Ver presentación</a>
       </div>
@@ -1008,8 +116,8 @@
       <div class="slide-overlay"></div>
       <div class="slide-content">
         <span class="slide-tag">Nuestro eslogan</span>
-        <h1>Aprende, Fijalo y Aplicado</h1>
-        <p>Recuerda que para lograrlo tienes que seguir nuestros consejos: Aprende, Fijalo y Aplicado — ese es nuestro eslogan. Preparación para exámenes oficiales también disponible.</p>
+        <h1>Aprende, Fíjalo y Aplícalo</h1>
+        <p>Recuerda que para lograrlo tienes que seguir nuestros consejos: Aprende, Fíjalo y Aplícalo — ese es nuestro eslogan. Preparación para exámenes oficiales también disponible.</p>
         <a href="#alumnos" class="slide-btn">Ver opiniones</a>
       </div>
     </div>
@@ -1036,14 +144,14 @@
       <div class="about-card reveal">
         <div class="about-card-img"><img src="./img/Online-domicilio.png" alt=""></div>
         <h3>Online y a Domicilio</h3>
-        <p>Somos tus Profesores Particulares de Inglés, Francés y Español. Trabajamos de forma Online y a Domicilio. Nos encontrarás formación para todos los niveles, ya sea comenzando de cero, clases para la vida social o profesional, refuerzo escolar, clases para empresas, gramática española, comentario de textos, preparación para Exámenes Oficiales, pruebas de acceso a la Universidad, etc.</p>
+        <p>Somos tus Profesores Particulares de Inglés, Francés y Español. Trabajamos de forma Online y a Domicilio. Aqui encontrarás formación para todos los niveles, ya sea comenzando de cero, clases para la vida social o profesional, refuerzo escolar, clases para empresas, gramática española, comentario de textos, preparación para Exámenes Oficiales, pruebas de acceso a la Universidad, etc.</p>
         <p style="margin-top:12px">Ofrecemos una variedad de materiales y estilos de aprendizaje que se flexibilizan a tu modo de vida ajetreado. Tú tienes la libertad de organizar tu tiempo con nosotros. Nos enfocamos y adaptamos las clases para que puedas avanzar a tu ritmo.</p>
       </div>
       <div class="about-card reveal">
         <div class="about-card-img"><img src="./img/hablar-leer-escu.webp" alt=""></div>
         <h3>Hablar · Leer · Escuchar · Escribir</h3>
         <p>Nos basamos en el Marco Común Europeo de Referencia para las lenguas que está dividido en varios niveles: A1·A2·B1·B2·C1·C2. Trabajamos las habilidades básicas para la comprensión oral, producción oral, comprensión escrita y producción escrita. Aprenderás a comunicarte adecuadamente en diferentes escenarios.</p>
-        <p style="margin-top:12px">Estudiarás la gramática que es fundamental pero sobre todo hablarás y mucho ya que es lo más útil. Recuerda que para lograrlo tienes que seguir nuestros consejos: Aprende, fácil y aplicado — ese es nuestro eslogan.</p>
+        <p style="margin-top:12px">Estudiarás la gramática que es fundamental pero sobre to52do hablarás y mucho ya que es lo más esencial. Recuerda que para lograrlo tienes que seguir nuestros consejos: Aprende, fácil y aplicado — ese es nuestro eslogan.</p>
       </div>
     </div>
   </div>
@@ -1066,8 +174,8 @@
       <div class="inicio-img reveal"><img src="./img/profesor-profesora.png" alt=""></div>
       <div class="inicio-text reveal">
         <p>Somos una joven pareja apasionados de los idiomas, llevamos más de 15 años enseñando en diferentes instituciones y Centros Educativos. Creemos que el aprendizaje no termina, un buen profesor continúa perfeccionando sus conocimientos, es por ello que seguimos ejercitándonos.</p>
-        <p>Teníamos algunas ideas para iniciar este proyecto pero no sabíamos por dónde empezar, sin embargo, todo comenzó al llegar la pandemia covid 19, eso lo controló todo. Como el mundo dio un giro abrupto hacia las plataformas digitales, llevamos a cabo otra forma de proseguir con nuestros deseos de enseñar y darnos a conocer.</p>
-        <p>Al inicio Internet nos parecía abrumadora, pero a través de él encontramos todo un mundo de innovaciones, perfeccionamos varios recursos, es un portal más por el cual todos podemos crear y revolucionar nuestros trabajos. ¡Ven a conocernos!</p>
+        <p>Teníamos algunas ideas para iniciar este proyecto pero no sabíamos por dónde empezar, sin embargo, todo comenzó al llegar la pandemia covid 19, eso lo cambio todo. Como el mundo dio un giro abrupto hacia las plataformas digitales, llevamos a cabo otra forma de proseguir con nuestros deseos de enseñar y darnos a conocer.</p>
+        <p>Al inicio Internet nos parecía abrumador, pero a través de él encontramos todo un mundo de innovaciones,informaciones y recursos, es un portal más por el cual todos podemos crear y revolucionar nuestros trabajos. ¡Ven a conocernos!</p>
       </div>
     </div>
   </div>
@@ -1092,7 +200,7 @@
             loading="lazy"
           />
           <div class="yt-topbar">
-            <div class="yt-avatar">🦉</div>
+            <div class="yt-avatar"><img src="./LogoSaboraIdiomas.png" alt=""></div>
             <div class="yt-title-text">Bienvenidos a Sabor a Idiomas (español)</div>
             <div class="yt-dots">⋮</div>
           </div>
@@ -1137,7 +245,7 @@
               alt="Sabor a Idiomas en Français" loading="lazy"
             />
             <div class="yt-topbar">
-              <div class="yt-avatar">🦉</div>
+              <div class="yt-avatar"><img src="./LogoSaboraIdiomas.png" alt=""></div>
               <div class="yt-title-text">Sabor a Idiomas (français)</div>
               <div class="yt-dots">⋮</div>
             </div>
@@ -1168,7 +276,7 @@
               alt="Sabor a Idiomas en English" loading="lazy"
             />
             <div class="yt-topbar">
-              <div class="yt-avatar">🦉</div>
+              <div class="yt-avatar"><img src="./LogoSaboraIdiomas.png" alt=""></div>
               <div class="yt-title-text">Sabor a Idiomas (english)</div>
               <div class="yt-dots">⋮</div>
             </div>
@@ -1193,123 +301,7 @@
   </div>
 </section>
 
-<!-- RECURSOS -->
-<section class="recursos" id="recursos">
-  <div class="container">
-    <div class="recursos-wrap">
 
-      <!-- LEFT: copy -->
-      <div class="reveal">
-        <div class="recursos-eyebrow">
-          <span class="pulse-dot"></span>
-          Oferta especial · Solo esta semana
-        </div>
-        <h2 class="recursos-title">
-          Prueba una clase<br>
-          <span>completamente gratis</span>
-        </h2>
-        <p class="recursos-desc">
-          Sin compromisos, sin tarjeta de crédito. Regístrate con tu nombre y correo
-          y te asignaremos una clase demo de 45 minutos con uno de nuestros profesores.
-          Descubre nuestro método y empieza a hablar desde el primer día.
-        </p>
-
-        <div class="recursos-perks">
-          <div class="r-perk">
-            <div class="r-perk-icon">✅</div>
-            <div class="r-perk-text">
-              <strong>Clase en directo con profesor</strong>
-              <span>45 minutos de sesión personalizada online o a domicilio</span>
-            </div>
-          </div>
-          <div class="r-perk">
-            <div class="r-perk-icon">📊</div>
-            <div class="r-perk-text">
-              <strong>Evaluación gratuita de tu nivel</strong>
-              <span>Diagnóstico real del Marco Europeo A1–C2</span>
-            </div>
-          </div>
-          <div class="r-perk">
-            <div class="r-perk-icon">🎯</div>
-            <div class="r-perk-text">
-              <strong>Plan de aprendizaje personalizado</strong>
-              <span>Recibirás una hoja de ruta adaptada a tus objetivos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="idioma-chips">
-          <div class="idioma-chip active" onclick="selectIdioma(this,'Inglés')">🇬🇧 Inglés</div>
-          <div class="idioma-chip" onclick="selectIdioma(this,'Español')">🇪🇸 Español</div>
-          <div class="idioma-chip" onclick="selectIdioma(this,'Français')">🇫🇷 Français</div>
-        </div>
-      </div>
-
-      <!-- RIGHT: card -->
-      <div class="reveal">
-        <div class="recursos-card">
-          <div class="recursos-card-header">
-            <h3>🎓 Reserva tu clase demo</h3>
-            <p>Completa el formulario y nos ponemos en contacto contigo en menos de 24 horas.</p>
-            <div class="r-spots">
-              <span class="dot"></span>
-              Solo 8 plazas disponibles esta semana
-            </div>
-          </div>
-
-          <div class="recursos-card-body">
-            <div id="rFormContent">
-
-              <div class="r-field">
-                <label for="r-nombre">Nombre completo *</label>
-                <input type="text" id="r-nombre" placeholder="Tu nombre y apellidos" autocomplete="name"/>
-                <span class="r-field-error" id="r-err-nombre">Por favor, introduce tu nombre.</span>
-              </div>
-
-              <div class="r-field">
-                <label for="r-email">Correo electrónico *</label>
-                <input type="email" id="r-email" placeholder="tu@correo.com" autocomplete="email"/>
-                <span class="r-field-error" id="r-err-email">Introduce un correo electrónico válido.</span>
-              </div>
-
-              <div class="r-field">
-                <label for="r-idioma">Idioma que deseas aprender *</label>
-                <select id="r-idioma">
-                  <option value="">— Selecciona un idioma —</option>
-                  <option value="Inglés">🇬🇧 Inglés</option>
-                  <option value="Español">🇪🇸 Español</option>
-                  <option value="Français">🇫🇷 Français</option>
-                </select>
-                <span class="r-field-error" id="r-err-idioma">Por favor, selecciona un idioma.</span>
-              </div>
-
-              <button class="r-submit" id="rSubmitBtn" onclick="enviarDemo()">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Quiero mi clase gratis
-              </button>
-              <p class="r-privacy">🔒 Tus datos son confidenciales. No los compartiremos con nadie.</p>
-
-            </div>
-
-            <!-- SUCCESS -->
-            <div class="r-success" id="rSuccess">
-              <div class="r-success-icon">🎉</div>
-              <h4>¡Plaza reservada!</h4>
-              <p>
-                Hola <strong id="rConfirmNombre"></strong>, hemos recibido tu solicitud.<br>
-                En breve recibirás un correo en <strong id="rConfirmEmail"></strong>
-                con los detalles de tu clase demo de <strong id="rConfirmIdioma"></strong>.<br><br>
-                ¡Nos vemos pronto! 🦉
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- NUESTROS ALUMNOS -->
 <section class="alumnos" id="alumnos">
@@ -1328,27 +320,28 @@
     <div class="reviews-grid">
       <div class="review-card reveal">
         <div class="stars">★★★★★</div>
-        <p>"Llevamos solo dos meses con ella y mi hija está encantada. La hace sentir segura en cada clase y aprende muchísimo. Totalmente recomendable."</p>
+        <p>"Javier es muy buen profesor de inglés. Te ayuda a mejorar tu inglés desde diferentes perspectivas pero siempre buscando que estés motivado. Super recomendable por sus clases dinámicas pero útiles!"</p>
         <div class="reviewer">
-          <div class="reviewer-avatar">E</div>
+          <div class="reviewer-avatar">K</div>
           <div>
-            <div class="reviewer-name">Elena Bajo-Molina</div>
-            <div class="reviewer-date">12/7/2020</div>
+            <div class="reviewer-name">Karolina F</div>
+            <div class="reviewer-date">Hace un mes</div>
           </div>
         </div>
-        <a href="#" class="review-link">Leer la reseña completa ↗</a>
+        <a href="https://maps.app.goo.gl/nViYsXocgvgU3kf9A" target="_blank" class="review-link">Leer la reseña completa ↗</a>
       </div>
+
       <div class="review-card reveal">
         <div class="stars">★★★★★</div>
-        <p>"Llevó aproximadamente un mes dando clases de francés con todo. Muy buena profesora y metódica, se nota que le apasiona lo que hace. Muy recomendable."</p>
+        <p>"Llevamos solo dos meses con ella y mi hijo está encantado. Le hace las clases amenas, sabe captar rápido cómo está el alumno y cómo tiene que enfocar la clase ese día. Seguiremos con ella y la recomendaré."</p>
         <div class="reviewer">
-          <div class="reviewer-avatar">P</div>
+          <div class="reviewer-avatar">G</div>
           <div>
-            <div class="reviewer-name">Pilar Llorente</div>
-            <div class="reviewer-date">3/12/2019</div>
+            <div class="reviewer-name">Gema Rojo Muñoz</div>
+            <div class="reviewer-date">Hace 2 meses</div>
           </div>
         </div>
-        <a href="#" class="review-link">Leer la reseña completa ↗</a>
+        <a href="https://maps.app.goo.gl/G8kdpT9VhydcuuH58" target="_blank" class="review-link">Leer la reseña completa ↗</a>
       </div>
     </div>
 
@@ -1425,8 +418,8 @@
             Duración 45 min
           </div>
           <div class="rec-trust-item">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            +500 alumnos
+           <!-- <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            +500 alumnos -->
           </div>
         </div>
       </div>
@@ -1438,7 +431,7 @@
           <h3>Reserva tu plaza ahora</h3>
           <p class="rec-card-sub">Solo necesitamos tu nombre, correo y el idioma que quieres aprender. ¡Es muy rápido!</p>
 
-          <!-- urgency bar -->
+          <!-- urgency bar 
           <div class="rec-urgency">
             <span class="rec-urgency-icon">🔥</span>
             <div class="rec-urgency-text">
@@ -1447,7 +440,7 @@
                 <div class="rec-progress-fill" id="recProgressFill"></div>
               </div>
             </div>
-          </div>
+          </div>-->
 
           <!-- FORM -->
           <div id="recFormContent">
@@ -1527,7 +520,7 @@
           <div class="contacto-icon">📱</div>
           <div class="contacto-item-text">
             <strong>Móvil / WhatsApp</strong>
-            <a href="https://wa.me/34600000000" target="_blank">+34 600 000 000</a>
+            <a href="https://wa.me/34644034598" target="_blank">+34 644 034 598</a>
           </div>
         </div>
 
@@ -1535,7 +528,7 @@
           <div class="contacto-icon">✉️</div>
           <div class="contacto-item-text">
             <strong>Correo electrónico</strong>
-            <a href="/cdn-cgi/l/email-protection#3d44484f544e4a524f560e0d7d52484951525256135e5250"><span class="__cf_email__" data-cfemail="59202c2b302a2e362b326a6919362c2d35363632773a3634">[email&#160;protected]</span></a>
+            <span class="__cf_email__">saboraidiomas@gmail.com</span></a>
           </div>
         </div>
 
@@ -1657,13 +650,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo-text">🦉 Sabor a Idiomas</div>
+        <div class="logo-text"><img src="/LogoSaboraIdiomas.png" alt=""> <span>Sabor a Idiomas</span></div>
         <p>Copyright © 2021–2024 Sabor a Idiomas · Todos los derechos reservados.</p>
         <p style="margin-top:10px">Edición y Redacción: Yurisleydis Olivó</p>
-        <p>Diseño web: Yurisleydis Olivó</p>
-        <p style="margin-top:8px">
+        <p>Diseño web: oordoneiz</p>
+        <!-- <p style="margin-top:8px">
           <a href="#">www.navalamanzano.com</a> · <a href="#">www.yuliaolivaria.com</a>
-        </p>
+        </p> -->
       </div>
       <div class="footer-col">
         <h4>Navegación</h4>
@@ -1672,7 +665,7 @@
           <li><a href="#">Nosotros</a></li>
           <li><a href="#">Contacto</a></li>
           <li><a href="#">Recursos</a></li>
-          <li><a href="#">Actividades Culturales</a></li>
+       
         </ul>
       </div>
       <div class="footer-col">
@@ -1685,13 +678,13 @@
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
+  <div class="footer-bottom">
       <p>© 2024 Sabor a Idiomas. Todos los derechos reservados.</p>
       <div class="powered">
-        <span>Con tecnología de</span>
-        <span class="godaddy-tag">GoDaddy Jero</span>
+        <span></span>
+   <!--   <span class="godaddy-tag"></span> -->
       </div>
-    </div>
+    </div> 
   </div>
 </footer>
 
@@ -1829,7 +822,7 @@
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>&nbsp;Enviando...';
 
     var templateParams = {
-      to_email:  'yuriswork30@outlook.com, info@servilujo.eu',
+      to_email:  'oordonei72@gmail.com',
       from_name:  nombre + ' ' + apellidos,
       from_email: email,
       movil:      movil,
